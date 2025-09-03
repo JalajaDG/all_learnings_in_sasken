@@ -1,0 +1,99 @@
+====================
+Complete Git Commands Cheat Sheet with Explanations
+====================
+
+1. Configure Git (only once per system)
+----------------------------------------
+git config --global user.name "Your Name"        # Set your name for commits
+git config --global user.email "you@example.com" # Set your email for commits
+git config --list                                # View all Git settings
+
+2. Create or Clone a Repository
+--------------------------------
+git init                                         # Create a new repository in the current folder
+git clone <repo_url>                             # Copy (clone) an existing repository
+
+3. Check Status and History
+----------------------------
+git status                                       # Show changed, staged, and untracked files
+git log                                          # Show full commit history
+git log --oneline --graph --all                  # Compact history with branch graph
+git show <commit_id>                             # Show details of a specific commit
+git diff                                         # Show unstaged changes
+git diff --staged                                # Show staged changes
+
+4. Stage and Commit Changes
+----------------------------
+git add file.txt                                 # Stage a specific file
+git add .                                        # Stage all changes
+git commit -m "Meaningful message"               # Commit staged changes
+git commit -am "Message"                         # Stage & commit tracked files in one go
+git commit --amend                               # Modify the most recent commit
+
+5. Branching
+-------------
+git branch                                       # List branches
+git branch <branch_name>                         # Create a new branch
+git checkout <branch_name>                       # Switch to another branch
+git checkout -b <branch_name>                    # Create & switch to new branch
+git branch -d <branch_name>                      # Delete a branch (safe)
+git branch -D <branch_name>                      # Force delete a branch
+
+6. Merging & Rebasing
+----------------------
+git merge <branch_name>                          # Merge another branch into current
+git rebase <branch_name>                         # Reapply commits on top of another branch
+git rebase -i HEAD~n                              # Interactive rebase for the last n commits
+
+7. Working with Remotes
+------------------------
+git remote -v                                    # Show connected remotes
+git remote add origin <url>                      # Add a remote repository
+git fetch origin                                 # Download changes from remote without merging
+git fetch --all                                  # Fetch updates from all remotes
+git push origin <branch>                         # Push commits to remote
+git push -u origin <branch>                      # Push and set as default upstream branch
+git pull origin <branch>                         # Get latest changes from remote
+git pull --rebase origin <branch>                # Pull with rebase instead of merge
+
+8. Cherry-Pick
+---------------
+git cherry-pick <commit_id>                      # Apply a specific commit from another branch
+git cherry-pick <start_commit>^..<end_commit>    # Apply a range of commits
+
+9. Stash Changes
+-----------------
+git stash                                        # Save current changes temporarily
+git stash list                                   # List stashed changes
+git stash pop                                    # Apply the most recent stash and remove it
+git stash apply stash@{n}                        # Apply a specific stash without deleting it
+
+10. Undo Changes
+-----------------
+git restore file.txt                             # Discard local changes in a file
+git reset --soft HEAD~1                          # Undo last commit but keep changes staged
+git reset --mixed HEAD~1                         # Undo last commit and unstage changes
+git reset --hard HEAD~1                          # Undo last commit and discard changes
+git revert <commit_id>                           # Create a new commit that undoes a specific commit
+
+11. Tags
+---------
+git tag v1.0                                     # Create a lightweight tag
+git tag -a v1.0 -m "Version 1.0 release"         # Create an annotated tag
+git push origin v1.0                             # Push tag to remote
+git push origin --tags                           # Push all tags to remote
+
+12. Repo Commands (for Android / Gerrit-based projects)
+--------------------------------------------------------
+repo init -u <manifest_url> -b <branch_name>     # Initialize a repo with manifest
+repo sync                                        # Sync all projects
+repo sync -j<N>                                  # Sync with N parallel jobs
+repo status                                      # Show the working branch for all projects
+repo branches                                    # List all available branches
+repo start <branch_name> <project>               # Start a new branch in a specific project
+repo upload                                      # Upload changes to Gerrit for review
+repo forall -c 'git status'                      # Run git status in all projects
+
+====================
+End of Git Commands
+====================

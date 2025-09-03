@@ -1,0 +1,32 @@
+MMI - Interview Questions - CM - Build and release 
+====================================================
+1)  Tell me about yourself and details of projects worked previously and what is the role and responsibility in the Project.
+2) Why CM(Configuration Management) is important and what is the purpose of the CM Team in the Projects and what is the Process we use in CM.
+3) Difference between git pull , git fetch and git push
+4) why git status , git staging and unstaging , git logs , git branches are used
+5) Branching Strategies , Merging Strategies , Release Process
+6) If Conflicts occurs,  what we need to do to clear the Conflicts
+7) Build Process of Android need to Know the process and How the Manifest files are created on which format they are saved
+8) What is most recent project and why we are looking for other Projects
+9) Project is based on OS Upgradation of Android.
+10) Which code review tool have you used?
+11) How can you roolback the commit in git and gerrit?
+12) what are the ways to apply patches?
+13) what is the push command you use to push the changes?
+14) Do yoi any Qustions that you want to ask about any details?
+
+1.What Git commands are you using in the current project?
+2.What process followed in the integration team (CSR, ASB, codebase, pushing)?
+3.We discussed the following:
+Git branch
+Git cherry-pick
+Git push
+Git fetch
+Git checkout
+Gerrit
+4.If Kyocera-san and you trigger a build at the same time, what will you do? How will you find out which one is our build?
+5.We discussed the flashing process and Artifactory.
+6.How will developers perform analysis in the current project (applying patches, builds,how to reduce analysis time)?
+7.Jenkins overview.
+8.If we have 6 Gerrits to cherry-pick, how would you do it using Jenkins?
+9.Scripting.

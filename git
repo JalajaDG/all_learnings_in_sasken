@@ -1,0 +1,658 @@
+Get a Local Repository
+----------------------
+
+You can create a local Git repository in two main ways:
+
+1. Clone an existing remote repository
+   -----------------------------------
+	git clone https://github.com/user/project.git
+
+  
+       - Git creates a folder named `project/`
+       - Inside, it puts:
+           - Working tree → the files you can edit
+           - `.git/` → your local repository
+       - Now you can edit, commit locally, and push later.
+
+2. Create a new local repository
+   -----------------------------
+   Commands:
+       mkdir myproject
+       cd myproject
+       git init
+
+       - `git init` creates a `.git/` folder in your directory.
+       - At this point, it’s a local repository only on your machine.
+
+   To share it later:
+       git remote add origin https://github.com/user/myproject.git
+       git push -u origin main
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+➡️state of files/Lifecycle of files in a Git repository
+	◾️Untracked, tracked, staged, and committed states.
+	◾️Commands: git add, git commit, git status.
+1. Tracked Files
+-----------------
+	◾️These are files that Git is already aware of and managing. They are part of the repository's history and are monitored for changes.
+	◾️states of Tracked Files:
+		-Unmodified: No changes have been made since the last commit.
+		-Modified: Changes have been made but are not yet staged.
+		-Staged: Changes are prepared (staged) for the next commit.
+	◾️A file you previously committed is tracked. If you edit it, Git detects the changes.
+	◾️Appears under "Changes not staged for commit" in git status.
+
+
+2. Untracked Files
+-----------------
+	◾️These are new files that Git doesn't know about yet. They exist in your working directory but are not being tracked by Git.
+
+	◾️Key Points:
+		◾️Untracked files are ignored by Git until you explicitly add them using git add.
+		◾️Git will show untracked files in git status.
+	◾️You create a new file (notes.txt), but Git doesn’t manage it until you add it to the repository.
+	◾️ Appears under "Untracked files" in git status.
+
+3. Staged Files
+-----------------
+	◾️These are files that have been marked for inclusion in the next commit using git add.
+	◾️Key Points:
+`		Staging allows you to selectively choose what to include in a commit.
+		Staged files are stored in Git's index (also called the staging area).
+		Staged files stay unchanged until committed or unstaged.:
+	◾️After editing file1.txt, you run git add file1.txt. Now, the changes are staged.
+	◾️ Appears under "Changes to be committed" in git status.
+	
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Working Tree
+------------
+- Only on your computer → nobody else can see it.
+- The set of actual files and folders you work on in your project.
+- Example:
+    myproject/
+    ├── file1.txt   ← working tree file
+    ├── main.c      ← working tree file
+    └── .git/       ← local repository (hidden folder)
+
+- Working tree = file1.txt, main.c, etc. (normal editable files)
+- `.git/` = Git’s storage (commits, branches, history)
+
+Creating a Working Tree
+-----------------------
+cd learning
+git init
+
+Result:
+learning/
+└── .git/   ← local repository storage
+(Now `learning` is your working tree)
+
+
+
+Basic Git Workflow
+------------------
+
+1️⃣ Add some files
+    echo "Hello Git" > readme.txt
+    (Now `readme.txt` is in your working tree, but Git isn’t tracking it yet.)
+
+2️⃣ Check the status
+    git status
+    Output example:
+        Untracked files:
+          readme.txt
+    (Git sees the file but hasn’t started tracking it.)
+
+3️⃣ Stage the file (add to staging area)
+    git add readme.txt
+    (Now `readme.txt` is in the staging area — ready to be committed.)
+
+4️⃣ Commit to the local repository
+    git commit -m "Add readme file"
+    (Snapshot is now stored in your local repository inside `.git/`.)
+
+5️⃣ (Optional) Link to a remote repository
+    git remote add origin https://github.com/user/learning.git
+    git push -u origin main
+    
+    
+ Flow:
+Working Tree → (git add) → Staging Area → (git commit) → Local Repo → (git push) → Remote Repo
+          ┌───────────────────────────────┐
+          │        Remote Repository      │
+          │ (GitHub, GitLab, Bitbucket)   │
+          └──────────────▲────────────────┘
+                         │  git push / git pull
+──────────────────────────────────────────────────────────────
+                         │
+          ┌──────────────┴────────────────┐
+          │       Local Repository        │
+          │     (.git folder in project)  │
+          │ - Stores commits, branches    │
+          │ - Private until pushed        │
+          └──────────────▲────────────────┘
+                         │ git commit
+──────────────────────────────────────────────────────────────
+                         │
+          ┌──────────────┴────────────────┐
+          │        Staging Area           │
+          │    (a.k.a. Index)             │
+          │ - Temporary holding area      │
+          │ - Add files with `git add`    │
+          └──────────────▲────────────────┘
+                         │ git add
+──────────────────────────────────────────────────────────────
+                         │
+          ┌──────────────┴────────────────┐
+          │         Working Tree          │
+          │ - Your actual files/folders   │
+          │ - Edit here                   │
+          │ - Changes are private         │
+          └───────────────────────────────┘
+
+
+1. Configure Git (only once per system)
+----------------------------------------
+    git config --global user.name "Your Name"        # Set your name for commits
+    git config --global user.email "you@example.com" # Set your email for commits
+    git config --list                                # Show all active Git settings
+                                                     # (name, email, editor, remotes, etc.)
+
+
+2. Create or Clone a Repository
+--------------------------------
+
+    Command                          | Description
+    ---------------------------------|----------------------------------------------
+    git init                         | Create a new empty repository in the current folder
+    git clone <repo_url>             | Copy (clone) an existing remote repository
+
+
+    Example 1 — git init
+    --------------------
+        mkdir myproject                   # Create a folder
+        cd myproject                      # Enter the folder
+        git init                          # Initialize an empty local repo
+
+        Result:
+        myproject/                        | Working tree (currently empty)
+        └── .git/                         | Local repository data (history, commits)
+
+        Note:
+        - After `git init`, the working tree has no files yet.
+        - You must create files, then `git add` them before committing.
+
+
+    Example 2 — git clone
+    ---------------------
+        git clone https://github.com/user/project.git
+
+        Result:
+        project/                          | Folder created
+        ├── (Working tree)                | Editable files from the remote repo
+        └── .git/                         | Local repository data (history, commits)
+
+
+
+3.	Check Status and History
+----------------------------
+
+	1.	git status
+		# Shows:
+		# - Untracked files (not yet staged)
+		# - Staged files (ready to commit)
+		# - Modified but unstaged files
+		# Helps you know what’s going on before committing.
+
+	2.	git log
+		# Shows the complete commit history with:
+		# - Commit IDs
+		# - Authors
+		# - Dates
+		# - Commit messages
+
+	3.	git log --oneline --graph --all
+		# Shows a compact view of history:
+		# - One line per commit
+		# - ASCII branch/merge graph
+		# - All branches
+
+	4.	git show <commit_id>
+		# Shows details for a specific commit:
+		# - Changes made
+		# - Author/date
+		# - Commit message
+
+	5.	git diff
+		# Shows differences between working tree and staging area (unstaged changes).
+		# → “What did I change but haven’t staged?”
+
+	6.	git diff --staged
+		# Shows differences between staging area and the last commit (staged changes).
+		# → “What will be committed if I commit now?”
+
+
+	Example: `git diff` vs `git diff --staged`
+	------------------------------------------
+		1️⃣ Edit `audioPlayer.c`
+			- Added: `//changes` at the top.
+			- `git diff`
+				→ Shows the change (unstaged).
+			- `git diff --staged`
+				→ Shows nothing (file not staged yet).
+
+		2️⃣ Stage the file
+			- `git add audioPlayer.c`
+			- `git diff --staged`
+				→ Shows the change (ready to commit).
+			- `git diff`
+				→ Shows nothing (working tree matches staging area).
+
+		Summary:
+			- **Before `git add`** → Change is *only* in working tree → `git diff` shows it.
+			- **After `git add`**  → Change is in staging area → `git diff --staged` shows it.
+
+
+		Removing Changes
+		----------------
+			•	If staged:
+					git restore --staged audioPlayer.c    # Unstage changes
+					git restore audioPlayer.c            # Discard from working tree
+			•	If not staged:
+					git restore audioPlayer.c            # Discard changes directly
+
+
+4.	Stage and Commit Changes
+----------------------------
+
+	1.	git add file.txt
+		# Stages a specific file for commit.
+
+	2.	git add .
+		# Stages all changes (new, modified, deleted files) in the current directory.
+
+	3.	git commit -m "Meaningful message"
+		# Commits all staged changes with a descriptive commit message.
+		# Only commits what’s already staged.
+		# If you made changes but didn’t run git add, those changes are ignored in this commit.
+		# Safer, because you control exactly what gets committed.	
+		# git add file1.txt
+		# git commit -m "Update file1"
+		# → Commits only file1.txt (even if other files were changed).
+
+		
+	4.	git commit -am "Message"
+		# Automatically stages and commits all modified, already-tracked files.
+		# Does not stage untracked files (new files) — you still need git add for those.
+		# git commit -am "Quick fix"
+		# → Commits all modified tracked files in one step.
+
+	5.	git commit --amend
+		# Modifies the most recent commit.
+		# Uses:
+		#   - Change the last commit message
+		#   - Add forgotten changes to the last commit
+		#
+		# Example:
+		#   1️⃣ Make a commit → `git commit -m "Initial commit"`
+		#   2️⃣ Realize you forgot a file → `git add missing_file`
+		#   3️⃣ Run → `git commit --amend`
+		#       → Adds the new file into the last commit (instead of creating a new commit)
+		#
+		# Note:
+		#   - This rewrites history for the last commit
+		#   - Avoid using it if the commit is already pushed to a shared remote
+
+
+5. Branching
+-------------
+	
+	git branch                                       # List branches in the repository. Current branch is marked with an asterisk (*).
+	git branch <branch_name>                         # Creates a new branch (but does not switch to it).
+	git checkout <branch_name>                       # Switch to another branch
+	git checkout -b <branch_name>                    # Create & switch to new branch
+	git branch -d <branch_name>                      # Delete a branch (safe).Prevents deletion if the branch has unmerged changes.
+	git branch -D <branch_name>                      # Force delete a branch. Deletes even if there are unmerged changes.
+
+
+
+
+6. Merging & Rebasing
+----------------------
+
+   1. git merge <branch_name>
+        # Merges another branch into the current branch.
+        # Creates a merge commit if branches have diverged.
+
+   2. git rebase <branch_name>
+        # Moves (reapplies) your current branch commits on top of another branch.
+        # Keeps history linear, avoids merge commits.
+
+   3. git rebase -i HEAD~n
+        #-i means interactive.
+        # Interactive rebase for the last n commits.
+        # HEAD~n means "the last n commits from the current branch"
+        # This command lets you open an editor where you can see the last n commits and choose to:
+        # Allows you to edit, squash commits(combine this commit into previous one), reorder commits, or drop commits.
+
+
+    The Commit Graph Before Merge/Rebase
+    ------------------------------------
+        main branch:    a --- b --- c --- d
+        feature branch:             |
+                                    E --- F
+
+        - main has commits: a, b, c, d
+        - feature has commits: E, F (starting from commit c)
+
+
+    git merge
+    ---------
+        Command:
+            git checkout main
+            git merge feature
+
+        What happens:
+            - Takes commits from 'feature' (E, F) and combines them into 'main'.
+            - Creates a new merge commit G that ties the histories together.
+
+        Result:
+            a --- b --- c --- d -------- G
+                        |               |
+                        E --- F --------
+
+        Key points:
+            - Extra commit: G (“Merge branch 'feature' into main”).
+            - History preserved: Both branch timelines are intact.
+            - Good for: Team workflows where history clarity is important.
+           -G → d → F → E → c → b → a
+
+
+
+
+
+    git rebase
+    ----------
+        Command:
+            git checkout feature
+            git rebase main
+
+        What happens:
+            - Replays commits E and F on top of main’s d.
+            - No merge commit is created; history becomes linear.
+
+        Result:
+            a --- b --- c --- d --- E' --- F'
+            (E' and F' are the same changes as E and F, but with new commit IDs.)
+
+    
+    Key Differences
+    ---------------
+        Feature         git merge                       git rebase
+        --------------------------------------------------------------------
+        Extra commit    Yes (merge commit)              No
+        History         Keeps both branch timelines     Rewrites into a single timeline
+        Commit IDs      Unchanged                       New commit IDs
+        Use case        Preserve full history clarity   Clean, linear history
+
+
+7. Working with Remotes
+------------------------
+
+    git remote -v
+        # Lists connected remote repositories and their URLs.
+        # origin is the default name Git gives to the remote repository you cloned from or connected to
+        # origin  https://github.com/user/myrepo.git (fetch)
+	  origin  https://github.com/user/myrepo.git (push)
+
+        
+
+    git remote add origin <url>
+        # Connects a local repo to a remote repository.
+
+   git fetch origin
+   	 # origin is the default name Git gives to the remote repository you cloned from or connected to
+  	 # Downloads changes from remote without merging into your branch.
+  	 # It connects to the remote repository called origin (usually your GitHub repo).
+   	 # It downloads all the new commits, branches, and tags from the remote that you don’t have locally yet.
+   	 # But it does NOT change or update your current working files or branch.
+   
+    # Analogy:
+   	# You and your friend both have copies of the same book (code repo).
+   	# Your friend writes some new pages and adds them to their book.
+   	# You want to see what your friend added, but you don’t want to change your book yet.
+   	# It downloads your friend’s new pages and keeps them in a separate folder inside .git.
+  	# Your original book (your current branch) does NOT change.
+   	# You can look at these new pages anytime, but they’re not mixed into your book yet.
+  	# To update your branch with these changes, you run:
+   	# git merge origin/main
+   	# (or)
+    	# git pull
+    	# which fetches and merges the changes.
+
+
+    git fetch --all
+    	# Fetches updates from all configured remote repositories.
+    	# If you have multiple remotes (e.g., origin, upstream),
+    	# this command downloads new commits, branches, and tags from all of them,
+    	# but does NOT merge or change your current branches.
+    	# downloads updates from all your remotes and stores them in separate remote-tracking branches inside your local repository (.git)— just like git fetch origin does for a single remote
+
+
+    git push origin <branch>
+        # Pushes commits from your local branch to the remote.
+        # to the remote repository named 'origin' (usually your GitHub repo).
+        # origin is the default name Git gives to the remote repository you cloned from or connected to
+        # This updates the remote branch with your latest changes,
+
+
+   git push -u origin <branch>
+   	#  Push this new branch to the remote and set it as default upstream
+    	# This command does two things at once:
+    	# 1. It uploads your local branch (with your new commits) to the remote called 'origin'.
+    	# 2. It tells Git: "Hey, from now on, when I run 'git push' or 'git pull' without any extra words,
+    	#    use this remote branch as the default for this local branch."
+    	#
+    	# So, next time you just run 'git push' or 'git pull' without writing 'origin <branch>',
+    	# Git will know exactly where to send or get updates.
+    	# Next time, you can simply run:git push
+
+
+    git pull origin <branch>
+        # Fetches and merges changes from remote into current branch.
+        # It fetches and merges just the changes from that one branch into your current local branch.
+        # You are currently on your local 'main' branch
+	# git checkout main
+	# Pull changes from the remote 'main' branch into your local 'main'
+	# git pull origin main
+	
+
+
+    git pull --rebase origin <branch>
+    	# Fetches changes from the remote branch <branch> on 'origin'.
+    	# Instead of merging, it reapplies your local commits on top of the fetched commits.
+    	# This avoids creating a merge commit and keeps the commit history linear and cleaner.
+
+
+8. Cherry-Pick
+---------------
+
+	git cherry-pick <commit_id>
+		# Applies a specific commit from another branch into your current branch.
+
+	git cherry-pick <start_commit>^..<end_commit>
+		# Applies a sequence of commits from <start_commit> (inclusive) up to <end_commit> (inclusive)
+		# onto your current branch.
+		# Useful when you want to apply multiple specific commits without merging the entire branch.
+
+	Example:
+
+		Commit history:
+			a111111 Commit A  
+			b222222 Commit B  
+			c333333 Commit C  
+			d444444 Commit D  
+
+		You want to cherry-pick commits B and C onto your current branch.
+
+		Command:
+			git cherry-pick b222222^..c333333
+
+		Explanation:
+			- b222222^ means the parent of commit B, so the range starts from commit B (inclusive).
+			- This will apply commits B and C onto your current branch.
+			-Commit IDs uniquely identify a commit everywhere in your repository — across all branches.
+
+		Simple example:
+
+			# Assume you are on branch 'master'.
+			# Another branch 'feature' has commits B and C you want to apply to master.
+
+			git checkout master
+			git cherry-pick b222222^..c333333
+
+
+
+
+9. Stash Changes
+-----------------
+
+    git stash
+        # Saves your changes temporarily and cleans working directory.
+        # Cleans your working directory to match the last commit.
+        # Good for switching branches without committing.
+
+    git stash list
+        # Lists all saved stashes.
+        # Each stash is shown with an identifier like stash@{0}, stash@{1}, etc.
+
+    git stash pop
+        # Applies the most recent stash and removes it from stash list.
+
+    git stash apply stash@{n}
+        # Applies a specific stash without removing it from stash list.
+        # Does not remove the stash from the list, so you can apply it again later if needed.
+
+
+
+10. Undo Changes
+-----------------
+
+    git restore file.txt
+    	# You edited file.txt but haven't staged it yet
+        # Discards local changes in a file (unstaged changes).
+
+    git reset --soft HEAD~1
+        # Moves HEAD back one commit but keeps all changes staged for recommit.
+        # scenario**
+        # You made a commit but realize you want to change the commit message or add more changes before finalizing.
+        # The last commit is undone.
+        # All your changes are still staged (ready to commit).
+        # You can edit files or change the commit message
+        # Commit again with new message or after adding more changes
+
+    git reset --mixed HEAD~1
+        # Moves HEAD back one commit and unstages changes (default).
+
+    git reset --hard HEAD~1
+        # Moves HEAD back one commit and discards all changes.
+
+    git revert <commit_id>
+        # creates a new commit that undoes the changes made by that old commit.
+        # It doesn’t remove or erase the old commit — it just adds a new commit that reverses its effect.
+        # safe : Because it does not change history (no commits are deleted).
+
+
+
+
+11. Tags
+---------
+
+    git tag v1.0
+        # Creates a lightweight tag (just a label pointing to the current commit).
+        # No extra information is saved.
+
+
+    git tag -a v1.0 -m "Version 1.0 release"
+        # Creates an annotated tag with a message and metadata.
+        # git tag: Command to create a tag in Git.
+        # -a v1.0: Creates an annotated tag named v1.0.
+        # Annotated tags store extra info like:
+        	Tagger’s name
+        	Date/time
+        	Tag message
+		-m "Version 1.0 release": Adds a message describing the tag, like a commit message.
+
+
+    git push origin v1.0
+        # Pushes a specific tag to remote.
+        # Push the tag v1.0 to the remote called origin
+
+    git push origin --tags
+        # Pushes all local tags to remote.
+        #  sends all tags you’ve created locally (e.g., v1.0, v2.0) to the remote repository named origin, so others can access those version tags too.
+
+
+12. Repo Commands (for Android / Gerrit-based projects)
+--------------------------------------------------------
+
+    repo init -u <manifest_url> -b <branch_name>
+        # Initializes a repo with given manifest and branch.
+        # A manifest is basically a file (usually XML) that lists a collection of multiple Git repositories along with:
+            - Their locations (URLs)
+            - Which branch or revision to use
+            - Where each repo should be placed in your local folder structure
+        # Manifest = A list that manages many repos together as one big project.
+
+        **Why use it?
+            # Instead of cloning many repos one by one, the manifest lets you manage all repos as a single project.
+            # The `repo` tool uses the manifest to download and organize all repos automatically.
+            # This makes working with large projects (like Android source) much easier.
+
+
+
+
+    repo sync
+        # Syncs all projects to latest revisions.
+        # Downloads and updates all repositories listed in the manifest
+        # Ensures your local copies are up-to-date with the latest changes from remote repos
+        # Useful to keep the entire multi-repo project in sync
+
+
+    repo sync -j<N>
+        # Syncs with N parallel jobs (faster).
+        # Syncs all projects like `repo sync`
+        # Uses N parallel jobs to download/update repos concurrently
+        # Speeds up syncing by doing multiple operations at once
+
+
+    repo status
+        # Shows working branch for all projects.
+        # Shows the current working branch and status for all projects in the repo workspace
+        # Helps you see which branch each project is on and if there are local changes
+
+
+    repo branches
+        # Lists all available branches across all projects in the repo workspace
+        # Helps you see what branches exist in each project managed by repo
+
+
+    repo start <branch_name> <project>
+        # Creates and switches to a new branch named <branch_name> in the specified <project>
+        # Used to begin working on a feature or fix in that particular project
+
+
+    repo upload
+        # Uploads committed changes to Gerrit for code review.
+        # Sends your committed changes to Gerrit for code review
+        # Allows team members to review, comment, and approve your code before merging
+
+
+    repo forall -c 'git status'
+        # Runs `git status` in all projects.
+        # Executes the command `git status` inside every project/repository
+        # Useful to quickly check the status of all repos in your repo workspace
+
+
+
